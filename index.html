@@ -30,31 +30,29 @@
     </header>
     <div class="container">
       <!-- Timeblocks go here -->
-      <div class="row">
-        <div class="col-sm-2 hour">
-          hour
+      <!-- starting blocks, might build dynamically with a for loop -->
+      <form>
+        <div class="row time-block">
+          <div class="col-sm-2 hour">
+            9AM
+          </div>
+          <textarea class="col-sm-9"> </textarea>
+          <button class="col-sm-1 saveBtn">save</button>
         </div>
-        <div class="col-sm-9">
-          event
+      </form>
+      <form>
+        <div class="row time-block">
+          <div class="col-sm-2 hour">
+            10AM
+          </div>
+          <textarea class="col-sm-9"> </textarea>
+          <button class="col-sm-1 saveBtn">save</button>
         </div>
-        <div class="col-sm-1 saveBtn">
-          save
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-2 hour">
-          hour
-        </div>
-        <div class="col-sm-9">
-          event
-        </div>
-        <div class="col-sm-1 saveBtn">
-          save
-        </div>
-      </div>
+      </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="assets/script.js"></script>
   </body>
 </html>
