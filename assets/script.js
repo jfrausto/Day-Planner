@@ -26,13 +26,31 @@ $(document).ready(function () {
   function init() {
     var storedEventTimeList = JSON.parse(localStorage.getItem("eventTimes"));
 
+    // console.log;
     if (storedEventTimeList !== null) {
       timeEventList = storedEventTimeList;
+      // storage not empty, going to print at least one stored event
+      renderEventTimes();
+      printStoredEvents();
+    } else {
+      // storage empty
+      //just print colors
+      renderEventTimes();
+      // var newTimeEventPair = {
+      //   event: "0",
+      //   hour: "0",
+      // };
+      // timeEventList.push(newTimeEventPair);
+      // console.log(
+      //   timeEventList[0] + "inside init with an null array initialization"
+      // );
     }
-    renderEventTimes();
-    console.log(
-      "this is the init function console log of timeEventList: " + timeEventList
-    );
+    // console.log(
+    //   "this is the init function console log of timeEventList[0]: " +
+    //     timeEventList[0].event +
+    //     " and... " +
+    //     timeEventList[0].hour
+    // );
   }
 
   init();
@@ -46,6 +64,17 @@ $(document).ready(function () {
       var thisHour = moment(hoursArray[i], "hA");
       console.log(thisHour);
       var textArea = $("#" + hoursArray[i]);
+      // check if we have previous events, and populate them
+
+      console.log(timeEventList + " ...inside renderEventTimes()");
+
+      console.log(textArea.attr("id") + "...this is the first id of rendering");
+      // if (timeEventList !== null) {
+      //   if (textArea.attr("id") == timeEventList[i].hour) {
+      //     textArea.val() = timeEventList[i].event;
+      //   }
+      // }
+
       // hoursArray[i];
       if (thisHour.isBefore(hourNow)) {
         textArea.addClass("past");
@@ -53,6 +82,22 @@ $(document).ready(function () {
         textArea.addClass("present");
       } else if (thisHour.isAfter(hourNow)) {
         textArea.addClass("future");
+      }
+    }
+  }
+
+  function printStoredEvents() {
+    //code here
+    for (var i = 0; i < timeEventList.length; i++) {
+      var tempHour = timeEventList[i].hour;
+      var tempEvent = timeEventList[i].event;
+      var newTextArea;
+
+      for (var j = 0; j < hoursArray.length; j++) {
+        if (tempHour === hoursArray[j]) {
+          newTextArea = $("#" + hoursArray[j]);
+          newTextArea.val(tempEvent);
+        }
       }
     }
   }
