@@ -11,4 +11,4 @@ In order to write this application, I employed a mix of jQuery, Bootstrap 4, and
 ## Links
 
 - [Repository](https://github.com/jfrausto/Day-Planner)
-- [GitHub Page](https://github.com/jfrausto/Day-Planner)
+- [GitHub Page](https://jfrausto.github.io/Day-Planner/)
