@@ -1,9 +1,10 @@
 $(document).ready(function () {
+  // grab current time in this format
   var now = moment().format("dddd MMMM Do YYYY, h:mm:ss A");
   var hourNow = moment().format("hA");
-  hourNow = moment("3PM", "hA"); // THIS IS JUST A DEFAULT TEST TIME
-  //  hourNow = moment(hourNow, "hA");
-  // UNCOMMENT THIS TO GET REAL TIME
+  // hourNow = moment("3PM", "hA"); // THIS IS JUST A DEFAULT TEST TIME
+  hourNow = moment(hourNow, "hA");
+  // THIS TO GET REAL TIME, xAM format
   var hoursArray = [
     "9AM",
     "10AM",
@@ -15,18 +16,13 @@ $(document).ready(function () {
     "4PM",
     "5PM",
   ];
-  // var hourNow = moment("hA");
-  console.log(now);
-  console.log(hourNow);
   var currentDayDisplay = $("#currentDay");
   currentDayDisplay.text(now);
-
   var timeEventList = []; // holds objects; pairs of events and times
 
   function init() {
+    // retrieve local storage
     var storedEventTimeList = JSON.parse(localStorage.getItem("eventTimes"));
-
-    // console.log;
     if (storedEventTimeList !== null) {
       timeEventList = storedEventTimeList;
       // storage not empty, going to print at least one stored event
@@ -36,46 +32,19 @@ $(document).ready(function () {
       // storage empty
       //just print colors
       renderEventTimes();
-      // var newTimeEventPair = {
-      //   event: "0",
-      //   hour: "0",
-      // };
-      // timeEventList.push(newTimeEventPair);
-      // console.log(
-      //   timeEventList[0] + "inside init with an null array initialization"
-      // );
     }
-    // console.log(
-    //   "this is the init function console log of timeEventList[0]: " +
-    //     timeEventList[0].event +
-    //     " and... " +
-    //     timeEventList[0].hour
-    // );
   }
-
+  // initialize the application upon load
   init();
 
+  // uses moment.js functions to compare times
   function renderEventTimes() {
-    // console.log($(".hour").text());
-    // var thisHour = $("#");
-    // if($("#9-AM").text());
-
+    // loop through each hour
     for (let i = 0; i < hoursArray.length; i++) {
       var thisHour = moment(hoursArray[i], "hA");
       console.log(thisHour);
       var textArea = $("#" + hoursArray[i]);
-      // check if we have previous events, and populate them
-
-      console.log(timeEventList + " ...inside renderEventTimes()");
-
-      console.log(textArea.attr("id") + "...this is the first id of rendering");
-      // if (timeEventList !== null) {
-      //   if (textArea.attr("id") == timeEventList[i].hour) {
-      //     textArea.val() = timeEventList[i].event;
-      //   }
-      // }
-
-      // hoursArray[i];
+      // add class/color depending on the time
       if (thisHour.isBefore(hourNow)) {
         textArea.addClass("past");
       } else if (thisHour.isSame(hourNow)) {
@@ -86,29 +55,30 @@ $(document).ready(function () {
     }
   }
 
+  // renders current stored events
   function printStoredEvents() {
-    //code here
+    // loop through both arrays!
+    // for each time/event pair,
+    // check against each hour for match
     for (var i = 0; i < timeEventList.length; i++) {
+      // store object properties for each
       var tempHour = timeEventList[i].hour;
       var tempEvent = timeEventList[i].event;
-      var newTextArea;
-
+      // var newTextArea;
       for (var j = 0; j < hoursArray.length; j++) {
         if (tempHour === hoursArray[j]) {
-          newTextArea = $("#" + hoursArray[j]);
+          var newTextArea = $("#" + hoursArray[j]);
           newTextArea.val(tempEvent);
         }
       }
     }
   }
 
-  // click save button event
-  $("button").on("click", function (e) {
+  // click any save button event
+  $(".saveBtn").on("click", function (e) {
     e.preventDefault();
-    var newEvent = $(this).prev().val();
-    console.log("click function: " + newEvent);
+    var newEvent = $(this).prev().val().trim();
     var hourID = $(this).prev().attr("id");
-    console.log(hourID);
     // saves event and time into local variable
 
     // begin storage, create new event object
@@ -116,24 +86,17 @@ $(document).ready(function () {
       event: newEvent,
       hour: hourID,
     };
-
-    console.log(
-      "this is the newly created timeEventPair upon CLICK: " +
-        newTimeEventPair.event +
-        "and " +
-        newTimeEventPair.hour
-    );
+    // push new pair into the array
     timeEventList.push(newTimeEventPair);
     // store the scores
     localStorage.setItem("eventTimes", JSON.stringify(timeEventList));
-    // renderEventTimes();
   });
-  // press enter after writing event
-  // $("textarea").on("submit", function (e) {
-  //   e.preventDefault();
-  //   var newEvent = $(this).val();
-  //   console.log("submit function: " + newEvent);
-  // });
 
-  // renderEventTimes();
+  // this scrap function clears local storage and events
+  $(".scrapBtn").on("click", function (e) {
+    e.preventDefault();
+    localStorage.clear();
+    timeEventList = [];
+    $("textarea").val("");
+  });
 });
